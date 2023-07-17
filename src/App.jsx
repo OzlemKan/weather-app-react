@@ -1,10 +1,11 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
+import { Forecast } from "./Forecast";
 
 function App() {
   const [data, setData] = useState({});
   const [location, setLocation] = useState("");
-  const url = `https://api.openweathermap.org/data/2.5/weather?q=${location}&units=metric&appid=0e851b2f408ed70e8347308854b3fe70`;
+  const url = `https://api.openweathermap.org/data/2.5/forecast?q=${location}&units=metric&appid=0e851b2f408ed70e8347308854b3fe70`;
 
   const searchLocation = (event) => {
     if (event.key === "Enter") {
@@ -30,41 +31,75 @@ function App() {
       <div className="container">
         <div className="top">
           <div className="location">
-            <p>{data.name}</p>
+            {data.city ? <p>{data.city.name}</p> : null}
           </div>
           <div className="temp">
-            {data.main ? <h1>{data.main.temp.toFixed()}°C</h1> : null}
+            {data.list ? <h1>{data.list[0].main.temp.toFixed()}°C</h1> : null}
           </div>
           <div className="description">
-            {data.weather ? <p>{data.weather[0].main}</p> : null}
+            {data.list ? <p>{data.list[0].weather[0].main}</p> : null}
           </div>
         </div>
 
-        {data.name !== undefined && (
+        <div className="forecastContainer">
           <div className="bottom">
-            <div className="feels">
-              {data.main ? (
-                <p className="bold">{data.main.feels_like.toFixed()}°C</p>
-              ) : null}
-              <p>Feels like</p>
-            </div>
-            <div className="humidity">
-              {data.main ? (
-                <p className="bold">{data.main.humidity.toFixed()}%</p>
-              ) : null}
-              <p>Humidity</p>
-            </div>
-            <div className="wind">
-              {data.wind ? (
-                <p className="bold">{data.wind.speed.toFixed()} m/s</p>
-              ) : null}
-              <p>Wind speed</p>
-            </div>{" "}
-          </div>
-        )}
-      </div>
+            {data.list ? (
+              <p className="bold">
+                {new Date(data.list[7].dt * 1000).toLocaleDateString("fr-FR", {
+                  weekday: "long",
+                  month: "numeric",
+                  day: "numeric",
+                })}
+              </p>
+            ) : null}
 
-      <div className="forecast"></div>
+            {data.list ? <p>{data.list[7].main.temp.toFixed()}°C</p> : null}
+          </div>
+
+          <div className="bottom">
+            {data.list ? (
+              <p className="bold">
+                {new Date(data.list[14].dt * 1000).toLocaleDateString("fr-FR", {
+                  weekday: "long",
+                  month: "numeric",
+                  day: "numeric",
+                })}
+              </p>
+            ) : null}
+
+            {data.list ? <p>{data.list[14].main.temp.toFixed()}°C</p> : null}
+          </div>
+
+          <div className="bottom">
+            {data.list ? (
+              <p className="bold">
+                {new Date(data.list[21].dt * 1000).toLocaleDateString("fr-FR", {
+                  weekday: "long",
+                  month: "numeric",
+                  day: "numeric",
+                })}
+              </p>
+            ) : null}
+
+            {data.list ? <p>{data.list[21].main.temp.toFixed()}°C</p> : null}
+          </div>
+
+          <div className="bottom">
+            {data.list ? (
+              <p className="bold">
+                {new Date(data.list[28].dt * 1000).toLocaleDateString("fr-FR", {
+                  weekday: "long",
+                  month: "numeric",
+                  day: "numeric",
+                })}
+              </p>
+            ) : null}
+            <p>
+              {data.list ? <p>{data.list[28].main.temp.toFixed()}°C</p> : null}
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
