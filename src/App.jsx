@@ -53,6 +53,15 @@ function App() {
               </p>
             ) : null}
 
+            <div>
+              {data.list ? (
+                <img
+                  src={`https://openweathermap.org/img/wn/${data.list[7].weather[0].icon}.png`}
+                  alt="Weather Icon"
+                />
+              ) : null}
+            </div>
+
             {data.list ? <p>{data.list[7].main.temp.toFixed()}°C</p> : null}
           </div>
 
@@ -66,6 +75,15 @@ function App() {
                 })}
               </p>
             ) : null}
+
+            <div>
+              {data.list ? (
+                <img
+                  src={`https://openweathermap.org/img/wn/${data.list[14].weather[0].icon}.png`}
+                  alt="Weather Icon"
+                />
+              ) : null}
+            </div>
 
             {data.list ? <p>{data.list[14].main.temp.toFixed()}°C</p> : null}
           </div>
@@ -81,6 +99,15 @@ function App() {
               </p>
             ) : null}
 
+            <div>
+              {data.list ? (
+                <img
+                  src={`https://openweathermap.org/img/wn/${data.list[14].weather[0].icon}.png`}
+                  alt="Weather Icon"
+                />
+              ) : null}
+            </div>
+
             {data.list ? <p>{data.list[21].main.temp.toFixed()}°C</p> : null}
           </div>
 
@@ -94,6 +121,15 @@ function App() {
                 })}
               </p>
             ) : null}
+
+            <div>
+              {data.list ? (
+                <img
+                  src={`https://openweathermap.org/img/wn/${data.list[28].weather[0].icon}.png`}
+                  alt="Weather Icon"
+                />
+              ) : null}
+            </div>
             <p>
               {data.list ? <p>{data.list[28].main.temp.toFixed()}°C</p> : null}
             </p>
