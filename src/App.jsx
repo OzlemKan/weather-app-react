@@ -1,141 +1,217 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Forecast } from "./Forecast";
+import { Line } from "react-chartjs-2";
+import WeatherChart from "./assets/WeatherChart";
+import useLocalStorage from "use-local-storage";
 
 function App() {
   const [data, setData] = useState({});
-  const [location, setLocation] = useState("");
-  const url = `https://api.openweathermap.org/data/2.5/forecast?q=${location}&units=metric&appid=0e851b2f408ed70e8347308854b3fe70`;
+  const [photoUrl, setPhotoUrl] = useLocalStorage("userPhotoUrl", "");
 
-  const searchLocation = (event) => {
-    if (event.key === "Enter") {
-      axios.get(url).then((response) => {
-        setData(response.data);
-        console.log(response.data);
-      });
-      setLocation("");
+  const defaultImageUrl = "https://unsplash.com/fr/photos/Q1p7bh3SHj8";
+  const [location, setLocation] = useLocalStorage(
+    "userLocation",
+    defaultImageUrl
+  );
+
+  const searchLocation = async () => {
+    try {
+      const response = await axios.get(
+        `https://api.openweathermap.org/data/2.5/forecast?q=${location}&units=metric&appid=0e851b2f408ed70e8347308854b3fe70`
+      );
+
+      setData(response.data);
+
+      const photoResponse = await axios.get(
+        `https://api.unsplash.com/photos/random?query=${location}&client_id=nOq89hQk6sTCBZb8EOXZB0tQKvOoJLdpbFA9QuoKR3E`
+      );
+
+      setPhotoUrl(photoResponse.data.urls.regular);
+
+      setLocation(location);
+    } catch (error) {
+      console.log(error);
     }
   };
 
+  useEffect(() => {
+    if (location) {
+      fetchData(location);
+    }
+  }, [location]);
+
+  const fetchData = async (location) => {
+    try {
+      const response = await axios.get(
+        `https://api.openweathermap.org/data/2.5/forecast?q=${location}&units=metric&appid=0e851b2f408ed70e8347308854b3fe70`
+      );
+
+      setData(response.data);
+    } catch (error) {
+      console.log("Error Response:", error.response.data);
+    }
+    storeLocation(location);
+  };
+
+  const storeLocation = (location) => {
+    setLocation(location);
+  };
   return (
-    <div className="app">
+    <div
+      className="app"
+      style={{
+        backgroundImage: `url(${photoUrl ? photoUrl : defaultImageUrl})`,
+      }}
+    >
       <div className="search">
         <input
           value={location}
           onChange={(event) => setLocation(event.target.value)}
           placeholder="Enter location"
-          onKeyPress={searchLocation}
+          onKeyDown={(event) => {
+            if (event.key === "Enter") {
+              searchLocation();
+            }
+          }}
           type="text"
         />
       </div>
-      <div className="container">
-        <div className="top">
-          <div className="location">
-            {data.city ? <p>{data.city.name}</p> : null}
+
+      {data.city !== undefined && (
+        <div className="container">
+          <div className="top">
+            <div className="location">
+              {data.city ? <h1>{data.city.name}, today</h1> : null}
+            </div>
+            <div>
+              <img
+                className="icon"
+                src={`https://openweathermap.org/img/wn/${data.list[1].weather[0].icon}.png`}
+                alt="Weather Icon"
+              />
+            </div>
+
+            <div className="temp">
+              {data.list ? <p>{data.list[0].main.temp.toFixed()}°C</p> : null}
+            </div>
           </div>
-          <div className="temp">
-            {data.list ? <h1>{data.list[0].main.temp.toFixed()}°C</h1> : null}
+
+          <div className="bottom_container">
+            <div className="bottom">
+              {data.list ? (
+                <p className="bold">
+                  {new Date(data.list[7].dt * 1000).toLocaleDateString(
+                    "en-EN",
+                    {
+                      weekday: "long",
+                      month: "numeric",
+                      day: "numeric",
+                    }
+                  )}
+                </p>
+              ) : null}
+
+              <div>
+                {data.list ? (
+                  <img
+                    className="icon"
+                    src={`https://openweathermap.org/img/wn/${data.list[7].weather[0].icon}.png`}
+                    alt="Weather Icon"
+                  />
+                ) : null}
+              </div>
+
+              {data.list ? <p>{data.list[7].main.temp.toFixed()}°C</p> : null}
+            </div>
+
+            <div className="bottom">
+              {data.list ? (
+                <p className="bold">
+                  {new Date(data.list[14].dt * 1000).toLocaleDateString(
+                    "en-EN",
+                    {
+                      weekday: "long",
+                      month: "numeric",
+                      day: "numeric",
+                    }
+                  )}
+                </p>
+              ) : null}
+
+              <div>
+                {data.list ? (
+                  <img
+                    className="icon"
+                    src={`https://openweathermap.org/img/wn/${data.list[14].weather[0].icon}.png`}
+                    alt="Weather Icon"
+                  />
+                ) : null}
+              </div>
+
+              {data.list ? <p>{data.list[14].main.temp.toFixed()}°C</p> : null}
+            </div>
+
+            <div className="bottom">
+              {data.list ? (
+                <p className="bold">
+                  {new Date(data.list[21].dt * 1000).toLocaleDateString(
+                    "en-EN",
+                    {
+                      weekday: "long",
+                      month: "numeric",
+                      day: "numeric",
+                    }
+                  )}
+                </p>
+              ) : null}
+
+              <div>
+                {data.list ? (
+                  <img
+                    className="icon"
+                    src={`https://openweathermap.org/img/wn/${data.list[14].weather[0].icon}.png`}
+                    alt="Weather Icon"
+                  />
+                ) : null}
+              </div>
+
+              {data.list ? <p>{data.list[21].main.temp.toFixed()}°C</p> : null}
+            </div>
+
+            <div className="bottom">
+              {data.list ? (
+                <p className="bold">
+                  {new Date(data.list[28].dt * 1000).toLocaleDateString(
+                    "en-EN",
+                    {
+                      weekday: "long",
+                      month: "numeric",
+                      day: "numeric",
+                    }
+                  )}
+                </p>
+              ) : null}
+
+              <div>
+                {data.list ? (
+                  <img
+                    className="icon"
+                    src={`https://openweathermap.org/img/wn/${data.list[28].weather[0].icon}.png`}
+                    alt="Weather Icon"
+                  />
+                ) : null}
+              </div>
+              <p>
+                {data.list ? (
+                  <p>{data.list[28].main.temp.toFixed()}°C</p>
+                ) : null}
+              </p>
+            </div>
           </div>
-          <div className="description">
-            {data.list ? <p>{data.list[0].weather[0].main}</p> : null}
-          </div>
+
+          <WeatherChart location={location} />
         </div>
-
-        <div className="forecastContainer">
-          <div className="bottom">
-            {data.list ? (
-              <p className="bold">
-                {new Date(data.list[7].dt * 1000).toLocaleDateString("fr-FR", {
-                  weekday: "long",
-                  month: "numeric",
-                  day: "numeric",
-                })}
-              </p>
-            ) : null}
-
-            <div>
-              {data.list ? (
-                <img
-                  src={`https://openweathermap.org/img/wn/${data.list[7].weather[0].icon}.png`}
-                  alt="Weather Icon"
-                />
-              ) : null}
-            </div>
-
-            {data.list ? <p>{data.list[7].main.temp.toFixed()}°C</p> : null}
-          </div>
-
-          <div className="bottom">
-            {data.list ? (
-              <p className="bold">
-                {new Date(data.list[14].dt * 1000).toLocaleDateString("fr-FR", {
-                  weekday: "long",
-                  month: "numeric",
-                  day: "numeric",
-                })}
-              </p>
-            ) : null}
-
-            <div>
-              {data.list ? (
-                <img
-                  src={`https://openweathermap.org/img/wn/${data.list[14].weather[0].icon}.png`}
-                  alt="Weather Icon"
-                />
-              ) : null}
-            </div>
-
-            {data.list ? <p>{data.list[14].main.temp.toFixed()}°C</p> : null}
-          </div>
-
-          <div className="bottom">
-            {data.list ? (
-              <p className="bold">
-                {new Date(data.list[21].dt * 1000).toLocaleDateString("fr-FR", {
-                  weekday: "long",
-                  month: "numeric",
-                  day: "numeric",
-                })}
-              </p>
-            ) : null}
-
-            <div>
-              {data.list ? (
-                <img
-                  src={`https://openweathermap.org/img/wn/${data.list[14].weather[0].icon}.png`}
-                  alt="Weather Icon"
-                />
-              ) : null}
-            </div>
-
-            {data.list ? <p>{data.list[21].main.temp.toFixed()}°C</p> : null}
-          </div>
-
-          <div className="bottom">
-            {data.list ? (
-              <p className="bold">
-                {new Date(data.list[28].dt * 1000).toLocaleDateString("fr-FR", {
-                  weekday: "long",
-                  month: "numeric",
-                  day: "numeric",
-                })}
-              </p>
-            ) : null}
-
-            <div>
-              {data.list ? (
-                <img
-                  src={`https://openweathermap.org/img/wn/${data.list[28].weather[0].icon}.png`}
-                  alt="Weather Icon"
-                />
-              ) : null}
-            </div>
-            <p>
-              {data.list ? <p>{data.list[28].main.temp.toFixed()}°C</p> : null}
-            </p>
-          </div>
-        </div>
-      </div>
+      )}
     </div>
   );
 }

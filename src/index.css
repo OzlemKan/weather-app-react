@@ -14,53 +14,60 @@ body {
 }
 
 p {
-  font-size: 1.6rem;
+  font-size: 1.8rem;
 }
 
 h1 {
-  font-size: 6rem;
+  font-size: 3rem;
 }
 
 .app {
   width: 100%;
-  height: 100vh;
+  height: 100%;
   position: relative;
   background-color: rgba(0, 0, 0, 0.4);
-  color: #fff;
+  color: darkslategray;
+  background-size: cover;
+  background-position: center;
 }
 
 .app:before {
   content: "";
-  background: url("./assets/sunset.jpg") no-repeat center center/cover;
   position: absolute;
   width: 100%;
   height: 100%;
   top: 0;
   left: 0;
   z-index: -1;
+  background-image: url(./assets/nasa-Q1p7bh3SHj8-unsplash.jpg);
+  background-size: cover;
+  background-position: center;
 }
 
 .app .search {
   text-align: center;
   padding: 1rem;
+  padding: 5% 0 65% 0;
 }
 
 .app input {
   padding: 0.7rem 1.5rem;
-  font-size: 1.2rem;
+  font-size: 2rem;
   border-radius: 25px;
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  background: rgba(255, 255, 255, 0.1);
-  color: #f8f8f8;
+  border: 1px solid darkslategray;
+  background-color: rgba(255, 255, 255, 0.6);
+  color: darkslategray;
 }
 
 ::placeholder {
-  color: #f8f8f8;
+  color: darkslategray;
+  text-align: center;
 }
 
 .container {
-  max-width: 700px;
+  max-width: 800px;
   margin: auto;
+  margin-top: -60%;
   padding: 0 1rem;
   position: relative;
   top: 10%;
@@ -70,8 +77,15 @@ h1 {
 }
 
 .app .top {
-  width: 100%;
   margin: 1rem auto;
+  display: flex;
+  justify-content: space-evenly;
+  text-align: center;
+  width: 100%;
+  padding: 1rem;
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.6);
+  flex-direction: column;
 }
 
 .app .description {
@@ -89,7 +103,7 @@ h1 {
   margin: 20px;
   padding: 1rem;
   border-radius: 12px;
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.6);
   flex-direction: column;
 }
 
@@ -99,4 +113,41 @@ h1 {
 
 .forecastContainer {
   display: flex;
+}
+
+.bottom_container {
+  display: flex;
+}
+
+.chart {
+  height: 500px;
+  display: flex;
+  justify-content: space-evenly;
+  text-align: center;
+  margin: 20px;
+  padding: 1rem;
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.6);
+  flex-direction: column;
+}
+
+.weatherchart {
+  display: flex;
+  justify-content: center;
+}
+
+@media only screen and (max-width: 835px) {
+  .app input {
+    font-size: 1.5rem;
+  }
+  .bottom_container {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+
+@media only screen and (max-width: 300px) {
+  .app input {
+    font-size: 1rem;
+  }
 }
