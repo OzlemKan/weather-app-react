@@ -14,6 +14,8 @@ function App() {
     defaultImageUrl
   );
 
+  let debounceTimer;
+
   const searchLocation = async () => {
     try {
       const response = await axios.get(
@@ -55,6 +57,23 @@ function App() {
 
   const storeLocation = (location) => {
     setLocation(location);
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      // Call the debounce function with a delay of 500ms before making the API call
+      debounce(searchLocation, 500)();
+    }
+  };
+
+  // Debounce function to delay the execution of a function
+  const debounce = (func, delay) => {
+    return function () {
+      const context = this;
+      const args = arguments;
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => func.apply(context, args), delay);
+    };
   };
   return (
     <div
