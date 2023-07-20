@@ -9,10 +9,7 @@ function App() {
   const [photoUrl, setPhotoUrl] = useLocalStorage("userPhotoUrl", "");
 
   const defaultImageUrl = "https://unsplash.com/fr/photos/Q1p7bh3SHj8";
-  const [location, setLocation] = useLocalStorage(
-    "userLocation",
-    defaultImageUrl
-  );
+  const [location, setLocation] = useLocalStorage("userLocation", "");
 
   let debounceTimer;
 
@@ -82,6 +79,7 @@ function App() {
         backgroundImage: `url(${photoUrl ? photoUrl : defaultImageUrl})`,
       }}
     >
+      <p className="title">Ozlem's weather app</p>
       <div className="search">
         <input
           value={location}

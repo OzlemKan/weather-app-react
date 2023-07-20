@@ -57,6 +57,7 @@ h1 {
   border: 1px solid darkslategray;
   background-color: rgba(255, 255, 255, 0.6);
   color: darkslategray;
+  text-align: center;
 }
 
 ::placeholder {
@@ -134,6 +135,18 @@ h1 {
 .weatherchart {
   display: flex;
   justify-content: center;
+}
+
+.title {
+  font-size: 3rem;
+  font-weight: 900;
+  border: solid;
+  border-radius: 50px;
+  background-color: rgba(255, 255, 255, 0.6);
+  text-align: center;
+  padding: 8px;
+  margin-left: 20%;
+  margin-right: 20%;
 }
 
 @media only screen and (max-width: 835px) {
